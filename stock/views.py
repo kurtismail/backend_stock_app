@@ -9,7 +9,8 @@ from .models import (
     Sales,
 )
 from .serializers import (
-    CategorySerializer, CategoryProductSerializer
+    CategorySerializer, CategoryProductSerializer, BrandSerializer
+    
 )
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import DjangoModelPermissions
@@ -27,3 +28,11 @@ class CategoryView(viewsets.ModelViewSet):
         if self.request.query_params.get("name"):
             return CategoryProductSerializer
         return super().get_serializer_class()
+
+
+class BrandView(viewsets.ModelViewSet):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    permission_classes = [DjangoModelPermissions]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["name"]
